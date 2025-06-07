@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique Vélos Route</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            width: 320px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            display: block;
+            width: 90%;
+            height: 220px;
+            object-fit: contain;
+            margin: 15px auto;
+            cursor: pointer;
+            border-radius: 5px;
+            background: #f8f8f8;
+        }
+
+        .product-info {
+            padding: 15px 20px 20px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #222;
+        }
+
+        .product-price {
+            color: #e63946;
+            font-size: 22px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .product-specs {
+            color: #555;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .product-specs span {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .product-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: 600;
+        }
+
+        .product-link:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Overlay styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+
+        .overlay-content {
+            background: white;
+            width: 80%;
+            max-width: 1200px;
+            height: 80%;
+            border-radius: 10px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .overlay-image-container {
+            width: 50%;
+            height: 100%;
+            background: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .overlay-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .overlay-info {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .overlay-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .overlay-price {
+            font-size: 26px;
+            color: #e63946;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .overlay-specs {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .spec-item {
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #333;
+            display: inline-block;
+            width: 120px;
+        }
+
+        .overlay-description {
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: #444;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: #007bff;
+        }
+
+        @media (max-width: 1000px) {
+            .overlay-content {
+                flex-direction: column;
+                height: 90%;
+                width: 90%;
+            }
+
+            .overlay-image-container,
+            .overlay-info {
+                width: 100%;
+            }
+
+            .overlay-image-container {
+                height: 40%;
+            }
+
+            .overlay-info {
+                height: 60%;
+                padding: 25px;
+            }
+
+            .color-option-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 5px;
+                border: 2px solid #ddd;
+                cursor: pointer;
+                transition: transform 0.2s;
+                object-fit: cover;
+                margin-right: 10px;
+            }
+
+            .color-option-img:hover {
+                transform: scale(1.05);
+            }
+
+            .color-option-img.selected {
+                border-color: #007bff;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
+
+            .color-options {
+                display: flex;
+                margin-top: 15px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Nos Vélos de Route</h1>
+
+    <div class="products-container">
+        <!-- Produit 1 -->
+        <div class="product-card">
+            <img src="Pictures/Giant CONTEND AR 4 L COLD NIGHT 1024009117.png" alt="Giant CONTEND AR 4"
+                class="product-image" onclick="showOverlay(0)">
+            <div class="product-info">
+                <div class="product-name">Giant CONTEND AR 4</div>
+                <div class="product-price">1.099,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Disques mécaniques Tektro</div>
+                    <div><span>Géométrie:</span> Endurance</div>
+                    <div><span>Poids:</span> 9.8 kg</div>
+                    <div><span>Transmission:</span> Shimano Claris 2x8</div>
+                </div>
+                <a href="https://www.sdrbike.be/GEMBLOUX/index.php/shop/categories/velos-de-course/product/30637-giant-contend-ar-4-l-cold-night"
+                    class="product-link">Voir sur SDR Bikes</a>
+            </div>
+        </div>
+
+        <!-- Produit 2 -->
+        <div class="product-card">
+            <img src="Pictures/Giant CONTEND AR 3 M BLACK 1024012115.png" alt="Giant CONTEND AR 3" class="product-image"
+                onclick="showOverlay(1)">
+            <div class="product-info">
+                <div class="product-name">Giant CONTEND AR 3</div>
+                <div class="product-price">1.199,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Disques hybrides hydrauliques</div>
+                    <div><span>Géométrie:</span> Endurance</div>
+                    <div><span>Poids:</span> 9.6 kg</div>
+                    <div><span>Transmission:</span> Shimano Sora 2x9</div>
+                </div>
+                <a href="https://www.sdrbike.be/GEMBLOUX/index.php/shop/categories/velos-de-course/product/30545-giant-contend-ar-3-m-black"
+                    class="product-link">Voir sur SDR Bikes</a>
+            </div>
+        </div>
+
+        <!-- Produit 3 -->
+        <!-- <div class="product-card">
+            <img src="Pictures/Giant AVAIL AR 3 L FROST SILVER 1017026117.png" alt="Giant AVAIL AR 3" class="product-image" onclick="showOverlay(2)">
+            <div class="product-info">
+                <div class="product-name">Giant AVAIL AR 3</div>
+                <div class="product-price">1.199,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Disques hybrides hydrauliques</div>
+                    <div><span>Géométrie:</span> Endurance (femme)</div>
+                    <div><span>Poids:</span> 9.3 kg</div>
+                    <div><span>Transmission:</span> Shimano Sora 2x9</div>
+                </div>
+                <a href="https://www.sdrbike.be/GEMBLOUX/index.php/shop/categories/velos-de-course/product/31544-giant-avail-ar-3-l-frost-silver" class="product-link">Voir sur SDR Bikes</a>
+            </div>
+        </div> -->
+
+        <!-- Produit 3 -->
+        <div class="product-card">
+            <img src="Pictures/Specialized Black.png" alt="Specialized Allez" class="product-image"
+                onclick="showOverlay(2)">
+            <div class="product-info">
+                <div class="product-name">Specialized Allez (Black)</div>
+                <div class="product-price">1.199,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Étriers mécaniques</div>
+                    <div><span>Géométrie:</span> Course</div>
+                    <div><span>Poids:</span> 9.2 kg</div>
+                    <div><span>Transmission:</span> Shimano Claris 2x8</div>
+                </div>
+                <a href="https://blackandbike.com/produit/allez/" class="product-link">Voir sur Black And Bike</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="Pictures/Specialized Red.png" alt="Specialized Allez" class="product-image"
+                onclick="showOverlay(3)">
+            <div class="product-info">
+                <div class="product-name">Specialized Allez (Red)</div>
+                <div class="product-price">1.199,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Étriers mécaniques</div>
+                    <div><span>Géométrie:</span> Course</div>
+                    <div><span>Poids:</span> 9.2 kg</div>
+                    <div><span>Transmission:</span> Shimano Claris 2x8</div>
+                </div>
+                <a href="https://blackandbike.com/produit/allez/" class="product-link">Voir sur Black And Bike</a>
+            </div>
+        </div>
+
+        <!-- Produit 5 -->
+        <div class="product-card">
+            <img src="Pictures/Van Rysel.png" alt="Van Rysel NCR" class="product-image" onclick="showOverlay(4)">
+            <div class="product-info">
+                <div class="product-name">Van Rysel NCR AF</div>
+                <div class="product-price">1.250,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Disques hydrauliques</div>
+                    <div><span>Géométrie:</span> Endurance</div>
+                    <div><span>Poids:</span> 9.1 kg</div>
+                    <div><span>Transmission:</span> Shimano Tiagra 2x10</div>
+                </div>
+                <a href="https://www.decathlon.be/fr/p/velo-route-endurance-shimano-tiagra-2x10v-ncr-af-gris/_/R-p-336600?mc=8668511&c=vert"
+                    class="product-link">Voir sur Decathlon</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay">
+        <span class="close-btn" onclick="closeOverlay()">&times;</span>
+        <div class="overlay-content">
+            <div class="overlay-image-container">
+                <img id="overlay-img" class="overlay-image" src="" alt="">
+                <div id="color-options" class="color-options"></div>
+            </div>
+            <div class="overlay-info">
+                <h2 id="overlay-name" class="overlay-name"></h2>
+                <div id="overlay-price" class="overlay-price"></div>
+
+                <div class="overlay-specs" id="overlay-specs">
+                    <!-- Filled by JavaScript -->
+                </div>
+
+                <div id="overlay-description" class="overlay-description">
+                    <!-- Filled by JavaScript -->
+                </div>
+
+                <a id="overlay-link" class="product-link" href="#" target="_blank">ACHETER MAINTENANT</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            {
+                name: "Giant CONTEND AR 4",
+                price: "1.099,00 €",
+                images: [{ url: "Pictures/Giant CONTEND AR 4 L COLD NIGHT 1024009117.png", color: "Bleu nuit" }],
+                link: "https://www.sdrbike.be/GEMBLOUX/index.php/shop/categories/velos-de-course/product/30637-giant-contend-ar-4-l-cold-night",
+                specs: [
+                    { label: "Freins", value: "Disques mécaniques Tektro" },
+                    { label: "Géométrie", value: "Endurance" },
+                    { label: "Poids", value: "9.8 kg" },
+                    { label: "Transmission", value: "Shimano Claris 2x8 vitesses" },
+                    { label: "Cadre", value: "Aluminium ALUXX" },
+                    { label: "Fourche", value: "Carbone" },
+                    { label: "Pneus", value: "Giant S-R4, 700x28c" }
+                ],
+                description: "Sortez des sentiers battus et prolongez vos aventures sur route. Des chaussées lisses aux chemins accidentés, ce vélo de route ultra performant est doté d’une souplesse intégrée et de pneus à grand volume, pour que vous puissiez rouler sur n’importe quelle route avec maîtrise et en toute confiance. Facteurs clés de performance Géométrie de route équilibrée Le cadre a été spécialement conçu pour procurer une sensation équilibrée et polyvalente qui allie une position confiante du cycliste à une grande agilité dans les virages et à l’accélération. Expérience de conduite souple La tige de selle innovante d-fuse atténue les chocs et les vibrations de la route, et le système de roues giant vous permet d’utiliser des pneus tubeless jusqu’à 38 mm pour une expérience de conduite plus souple et un risque de crevaison réduit. Contrôle total L’intégration sans faille des freins à disque flat mount et des axes traversants de 12 mm à l’avant et à l’arrière permet de produire une puissance de freinage plus constante pour un meilleur contrôle, même par temps humide et sur les routes accidentées."
+            },
+            {
+                name: "Giant CONTEND AR 3",
+                price: "1.199,00 €",
+                images: [{ url: "Pictures/Giant CONTEND AR 3 M BLACK 1024012115.png", color: "Noir" }],
+                link: "https://www.sdrbike.be/GEMBLOUX/index.php/shop/categories/velos-de-course/product/30545-giant-contend-ar-3-m-black",
+                specs: [
+                    { label: "Freins", value: "Disques hybrides hydrauliques" },
+                    { label: "Géométrie", value: "Endurance" },
+                    { label: "Poids", value: "9.6 kg" },
+                    { label: "Transmission", value: "Shimano Sora 2x9 vitesses" },
+                    { label: "Cadre", value: "Aluminium ALUXX SL" },
+                    { label: "Fourche", value: "Carbone Advanced-Grade" },
+                    { label: "Pneus", value: "Giant S-R4, 700x32c" }
+                ],
+                description: "Partez à l'aventure et profitez de longues sorties. Que ce soit sur des routes lisses ou des chemins accidentés, vous roulez partout avec confiance et contrôle, grâce à la flexibilité et aux pneus plus larges de ce vélo de route polyvalent. Facteurs clés de performance Géométrie de course équilibrée Le cadre est conçu pour offrir une sensation de conduite équilibrée. Il associe une position stable avec une grande maniabilité dans les virages et permet une accélération rapide. Qualité de roulement fluide La tige de selle innovante d-fuse absorbe les chocs et les vibrations de la route. Le giant wheelsystem est compatible avec des pneus tubeless jusqu'à 38 mm pour une conduite plus douce et un risque réduit de crevaison. Contrôle total Le vélo est équipé de freins à disque flat-mount avec axes traversants de 12 mm (avant et arrière), offrant une puissance de freinage constante. Vous bénéficiez ainsi de plus de contrôle, même par temps humide et sur routes irrégulières."
+            },
+            {
+                name: "Specialized Allez (Black)",
+                price: "1.199,00 €",
+                images: ["Pictures/Specialized Black.png"],
+                link: "https://blackandbike.com/produit/allez/",
+                specs: [
+                    { label: "Freins", value: "Étriers mécaniques" },
+                    { label: "Géométrie", value: "Course" },
+                    { label: "Poids", value: "9.2 kg" },
+                    { label: "Transmission", value: "Shimano Claris 2x8 vitesses" },
+                    { label: "Cadre", value: "Aluminium E5 Premium" },
+                    { label: "Fourche", value: "Carbone FACT" },
+                    { label: "Pneus", value: "Specialized Espoir Sport, 700x25c" }
+                ],
+                description: "L'Allez de Specialized est un vélo de course légendaire avec un cadre aluminium E5 Premium qui rivalise avec certains cadres carbone. Sa géométrie course est réactive tout en restant confortable. La fourche carbone FACT et les pneus Specialized Espoir Sport de 25mm améliorent l'absorption des vibrations."
+            },
+            {
+                name: "Specialized Allez (Red)",
+                price: "1.199,00 €",
+                images: ["Pictures/Specialized Red.png"],
+                link: "https://blackandbike.com/produit/allez/",
+                specs: [
+                    { label: "Freins", value: "Étriers mécaniques" },
+                    { label: "Géométrie", value: "Course" },
+                    { label: "Poids", value: "9.2 kg" },
+                    { label: "Transmission", value: "Shimano Claris 2x8 vitesses" },
+                    { label: "Cadre", value: "Aluminium E5 Premium" },
+                    { label: "Fourche", value: "Carbone FACT" },
+                    { label: "Pneus", value: "Specialized Espoir Sport, 700x25c" }
+                ],
+                description: "L'Allez de Specialized est un vélo de course légendaire avec un cadre aluminium E5 Premium qui rivalise avec certains cadres carbone. Sa géométrie course est réactive tout en restant confortable. La fourche carbone FACT et les pneus Specialized Espoir Sport de 25mm améliorent l'absorption des vibrations."
+            },
+            {
+                name: "Van Rysel NCR AF",
+                price: "1.299,00 €",
+                images: [{ url: "Pictures/Van Rysel.png", color: "Vert cendré" }],
+                link: "https://www.decathlon.be/fr/p/velo-route-endurance-shimano-tiagra-2x10v-ncr-af-gris/_/R-p-336600?mc=8668511&c=vert",
+                specs: [
+                    { label: "Freins", value: "Disques hydrauliques" },
+                    { label: "Géométrie", value: "Endurance" },
+                    { label: "Poids", value: "9.1 kg" },
+                    { label: "Transmission", value: "Shimano Tiagra 2x10 vitesses" },
+                    { label: "Cadre", value: "Aluminium 6061 hydroformé" },
+                    { label: "Fourche", value: "Carbone UD" },
+                    { label: "Pneus", value: "Michelin Dynamic Sport, 700x28c" }
+                ],
+                description: "Le Van Rysel NCR AF est une excellente option d'entrée de gamme."
+            }
+        ];
+
+        let currentProductIndex = 0;
+        let currentColorIndex = 0;
+
+        function showOverlay(index) {
+            currentProductIndex = index;
+            currentColorIndex = 0;
+            updateOverlay();
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        function updateOverlay() {
+            const product = products[currentProductIndex];
+
+            // Correction ici - utiliser product.images[currentColorIndex].url
+            const mainImageUrl = typeof product.images[currentColorIndex] === 'string'
+                ? product.images[currentColorIndex]
+                : product.images[currentColorIndex].url;
+
+            document.getElementById('overlay-img').src = mainImageUrl;
+            document.getElementById('overlay-name').textContent = product.name;
+            document.getElementById('overlay-price').textContent = product.price;
+            document.getElementById('overlay-link').href = product.link;
+
+            const specsContainer = document.getElementById('overlay-specs');
+            specsContainer.innerHTML = '';
+            product.specs.forEach(spec => {
+                const specElement = document.createElement('div');
+                specElement.className = 'spec-item';
+                specElement.innerHTML = `<span class="spec-label">${spec.label}:</span> ${spec.value}`;
+                specsContainer.appendChild(specElement);
+            });
+
+            document.getElementById('overlay-description').innerHTML = `<p>${product.description}</p>`;
+
+            const colorOptionsContainer = document.getElementById('color-options');
+            colorOptionsContainer.innerHTML = '';
+
+            if (product.images.length > 1) {
+                const colorTitle = document.createElement('div');
+                colorTitle.textContent = "Couleurs disponibles:";
+                colorTitle.style.width = "100%";
+                colorTitle.style.marginBottom = "10px";
+                colorTitle.style.fontWeight = "bold";
+                colorOptionsContainer.appendChild(colorTitle);
+
+                product.images.forEach((img, idx) => {
+                    const imgUrl = typeof img === 'string' ? img : img.url;
+                    const color = typeof img === 'string' ? '' : img.color;
+
+                    const colorOption = document.createElement('img');
+                    colorOption.src = imgUrl;
+                    colorOption.className = `color-option-img ${idx === currentColorIndex ? 'selected' : ''}`;
+                    colorOption.title = color;
+                    colorOption.alt = color;
+                    colorOption.onclick = (e) => {
+                        e.stopPropagation();
+                        currentColorIndex = idx;
+                        updateOverlay();
+                    };
+                    colorOptionsContainer.appendChild(colorOption);
+                });
+            }
+        }
+
+        function closeOverlay() {
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        document.getElementById('overlay').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeOverlay();
+            }
+        });
+    </script>
+</body>
+
+</html>
