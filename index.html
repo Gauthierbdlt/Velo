@@ -22,6 +22,8 @@
             text-align: center;
             color: #333;
             margin-bottom: 30px;
+            background-color: #ddd;
+            backdrop-filter: blur(2px);
         }
 
 
@@ -283,13 +285,15 @@
                 margin-top: 15px;
                 flex-wrap: wrap;
             }
+
+
         }
     </style>
 </head>
 
 <body>
-    <h1>Nos Vélos de Route</h1>
-
+    <h1>Sélection de Vélo</h1>
+    <h1>Vélos de route</h1>
     <div class="products-container">
         <!-- Produit 1 -->
         <div class="product-card">
@@ -378,6 +382,47 @@
         </div>
     </div>
 
+
+    <h1>Vélos de Gravel (avec guidon type <em>BullHorn</em>)</h1>
+
+    <div class="products-container">
+
+        <!-- Gravel 1 -->
+        <div class="product-card">
+            <img src="Pictures/CheckpointALR3.png" alt="Trek Checkpoint ALR 3" class="product-image"
+                onclick="showOverlay(6)">
+            <div class="product-info">
+                <div class="product-name">Trek Checkpoint ALR 3</div>
+                <div class="product-price">1.299,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Disques hydrauliques</div>
+                    <div><span>Géométrie:</span> Gravel</div>
+                    <div><span>Poids:</span> 10.5 kg</div>
+                    <div><span>Transmission:</span> Shimano GRX 2x10</div>
+                </div>
+                <a href="https://blackandbike.com/produit/checkpoint-alr-3/" class="product-link">Voir sur Black And
+                    Bike</a>
+            </div>
+        </div>
+
+        <!-- Gravel 2 -->
+        <div class="product-card">
+            <img src="Pictures/GiantRevolt.png" alt="Giant Revolt 2" class="product-image" onclick="showOverlay(5)">
+            <div class="product-info">
+                <div class="product-name">Giant Revolt 2</div>
+                <div class="product-price">1.399,00 €</div>
+                <div class="product-specs">
+                    <div><span>Freins:</span> Disques hydrauliques</div>
+                    <div><span>Géométrie:</span> Gravel</div>
+                    <div><span>Poids:</span> 10.2 kg</div>
+                    <div><span>Transmission:</span> Shimano GRX 2x10</div>
+                </div>
+                <a href="https://www.sdrbike.be/GEMBLOUX/index.php/shop/categories/velos-de-gravel/product/31195-giant-revolt-2-s-black-diamond"
+                    class="product-link">Voir sur SDR Bikes</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Overlay -->
     <div id="overlay" class="overlay">
         <span class="close-btn" onclick="closeOverlay()">&times;</span>
@@ -419,7 +464,7 @@
                     { label: "Fourche", value: "Carbone" },
                     { label: "Pneus", value: "Giant S-R4, 700x28c" }
                 ],
-                description: "Sortez des sentiers battus et prolongez vos aventures sur route. Des chaussées lisses aux chemins accidentés, ce vélo de route ultra performant est doté d’une souplesse intégrée et de pneus à grand volume, pour que vous puissiez rouler sur n’importe quelle route avec maîtrise et en toute confiance. Facteurs clés de performance Géométrie de route équilibrée Le cadre a été spécialement conçu pour procurer une sensation équilibrée et polyvalente qui allie une position confiante du cycliste à une grande agilité dans les virages et à l’accélération. Expérience de conduite souple La tige de selle innovante d-fuse atténue les chocs et les vibrations de la route, et le système de roues giant vous permet d’utiliser des pneus tubeless jusqu’à 38 mm pour une expérience de conduite plus souple et un risque de crevaison réduit. Contrôle total L’intégration sans faille des freins à disque flat mount et des axes traversants de 12 mm à l’avant et à l’arrière permet de produire une puissance de freinage plus constante pour un meilleur contrôle, même par temps humide et sur les routes accidentées."
+                description: "Sortez des sentiers battus et prolongez vos aventures sur route. Des chaussées lisses aux chemins accidentés, ce vélo de route ultra performant est doté d'une souplesse intégrée et de pneus à grand volume, pour que vous puissiez rouler sur n'importe quelle route avec maîtrise et en toute confiance. Facteurs clés de performance Géométrie de route équilibrée Le cadre a été spécialement conçu pour procurer une sensation équilibrée et polyvalente qui allie une position confiante du cycliste à une grande agilité dans les virages et à l'accélération. Expérience de conduite souple La tige de selle innovante d-fuse atténue les chocs et les vibrations de la route, et le système de roues giant vous permet d'utiliser des pneus tubeless jusqu'à 38 mm pour une expérience de conduite plus souple et un risque de crevaison réduit. Contrôle total L'intégration sans faille des freins à disque flat mount et des axes traversants de 12 mm à l'avant et à l'arrière permet de produire une puissance de freinage plus constante pour un meilleur contrôle, même par temps humide et sur les routes accidentées."
             },
             {
                 name: "Giant CONTEND AR 3",
@@ -484,6 +529,38 @@
                     { label: "Pneus", value: "Michelin Dynamic Sport, 700x28c" }
                 ],
                 description: "Le Van Rysel NCR AF est une excellente option d'entrée de gamme."
+            },
+            {
+                name: "Giant Revolt 2",
+                price: "1.399,00 €",
+                images: [{ url: "Pictures/GianRevolt.png", color: "Noir diamant" }],
+                link: "https://www.sdrbike.be/GEMBLOUX/index.php/shop/categories/velos-de-gravel/product/31195-giant-revolt-2-s-black-diamond",
+                specs: [
+                    { label: "Freins", value: "Disques hydrauliques" },
+                    { label: "Géométrie", value: "Gravel" },
+                    { label: "Poids", value: "10.2 kg" },
+                    { label: "Transmission", value: "Shimano GRX 2x10 vitesses" },
+                    { label: "Cadre", value: "Aluminium ALUXX SL" },
+                    { label: "Fourche", value: "Carbone Advanced-Grade" },
+                    { label: "Pneus", value: "Giant CrossCut, 700x38c" }
+                ],
+                description: "Le Giant Revolt 2 est un vélo gravel polyvalent conçu pour explorer au-delà des routes pavées. Son cadre aluminium léger et sa fourche carbone offrent un bon compromis entre rigidité et confort. La transmission Shimano GRX est spécifiquement conçue pour le gravel avec des commandes ergonomiques et une large gamme de vitesses. Les pneus larges de 38mm assurent une bonne adhérence sur tous types de terrains."
+            },
+            {
+                name: "Trek Checkpoint ALR 3",
+                price: "1.é99,00 €",
+                images: [{ url: "Pictures/CheckpointALR3.png", color: "Noir" }],
+                link: "https://blackandbike.com/produit/checkpoint-alr-3/",
+                specs: [
+                    { label: "Freins", value: "Disques hydrauliques" },
+                    { label: "Géométrie", value: "Gravel" },
+                    { label: "Poids", value: "10.5 kg" },
+                    { label: "Transmission", value: "Shimano GRX 2x10 vitesses" },
+                    { label: "Cadre", value: "Aluminium Alpha 300 Series" },
+                    { label: "Fourche", value: "Carbone" },
+                    { label: "Pneus", value: "Bontrager GR1, 700x40c" }
+                ],
+                description: "Le Trek Checkpoint ALR 3 est un vélo gravel performant avec un cadre aluminium haut de gamme et une fourche carbone. La transmission Shimano GRX offre une large gamme de vitesses adaptée aux terrains variés. Le système d'ancrage IsoSpeed au niveau du tube de selle améliore le confort sur les longues distances. Avec des pneus de 40mm, ce vélo est parfait pour les aventures sur chemins et routes secondaires."
             }
         ];
 
